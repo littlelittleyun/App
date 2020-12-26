@@ -18,8 +18,13 @@
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.app.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_weather"
+        android:name="com.example.app.ui.Weather.weatherFragment"
+        android:label="weather_fragment"
+        tools:layout="@layout/weather_fragment" />
+    <fragment
+        android:id="@+id/navigation_music"
+        android:name="com.example.app.ui.music.musicFragment"
+        android:label="music_fragment"
+        tools:layout="@layout/music_fragment" />
 </navigation>
