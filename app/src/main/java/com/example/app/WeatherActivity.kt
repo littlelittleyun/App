@@ -10,27 +10,28 @@ import com.example.app.weather.Forecast
 import com.example.app.weather.Weather
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.android.synthetic.main.weather_fragment2.*
+import kotlinx.android.synthetic.main.activity_weather.*
 
 
-class weatherActivity : AppCompatActivity() {
+
+
+class WeatherActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        val baseURL = "http://t.weather.itboy.net/api/weather/city/"
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_weather)
 
-        val intent = intent
-        val bundle = intent.extras
-        val cityCode = bundle!!.getString("citycode")
+      
 
-        val baseURL = "http://t.weather.itboy.net/api/weather/city/"
-
-        //val cityCode = intent.getStringExtra("city_code")
+        
+        val cityCode = intent.getStringExtra("city_code")
         val queue = Volley.newRequestQueue(this)
         val stringRequest = StringRequest(baseURL + cityCode, {
             val gson = Gson()
             val WeatherType = object : TypeToken<Weather>() {}.type
             val weather = gson.fromJson<Weather>(it, WeatherType)
-
+            Log.d("MainActivity", "$weather")
             city.text = weather.cityInfo.city
             province.text = weather.cityInfo.parent
             wendu.text = "温度：" + weather.data.wendu

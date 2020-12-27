@@ -4,94 +4,109 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#EDCEF3"
+    android:layout_marginBottom="50dp"
     tools:context=".ui.music.musicFragment">
 
     <TextView
         android:id="@+id/count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="45dp"
         android:text="count"
+        android:textColor="@android:color/holo_purple"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="@+id/musicName"
-        app:layout_constraintStart_toStartOf="@+id/musicName"
-        app:layout_constraintTop_toBottomOf="@+id/LAST" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/LAST"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
-        android:onClick="onLast"
-        android:text="@string/prev"
-        app:layout_constraintEnd_toEndOf="@+id/count"
-        app:layout_constraintStart_toStartOf="@+id/count"
-        app:layout_constraintTop_toBottomOf="@+id/NEXT" />
+        android:layout_marginEnd="64dp"
+        android:layout_marginRight="64dp"
+        android:background="#DDC3E1"
+        android:text="LAST"
+        android:textColor="@android:color/holo_purple"
+        app:layout_constraintBaseline_toBaselineOf="@+id/NEXT"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/musicName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="48dp"
+        android:gravity="center"
         android:text="Name"
+        android:textColor="@android:color/holo_purple"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="@+id/seekBar"
-        app:layout_constraintStart_toStartOf="@+id/seekBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/count" />
 
     <Button
         android:id="@+id/PAUSE"
-        android:layout_width="84dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="34dp"
-        android:onClick="onPause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+
+        android:background="#DDC3E1"
         android:text="PAUSE"
-        app:layout_constraintEnd_toEndOf="@+id/STOP"
-        app:layout_constraintStart_toStartOf="@+id/STOP"
-        app:layout_constraintTop_toBottomOf="@+id/Play" />
+        android:textColor="@android:color/holo_purple"
+        app:layout_constraintBaseline_toBaselineOf="@+id/Play"
+        app:layout_constraintEnd_toStartOf="@+id/Play"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/STOP"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
-        android:onClick="onStop"
+
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:background="#DDC3E1"
         android:text="STOP"
-        app:layout_constraintEnd_toEndOf="@+id/NEXT"
-        app:layout_constraintStart_toStartOf="@+id/NEXT"
-        app:layout_constraintTop_toBottomOf="@+id/PAUSE" />
+        android:textColor="@android:color/holo_purple"
+        app:layout_constraintBaseline_toBaselineOf="@+id/Play"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/NEXT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
-        android:onClick="onNext"
+
+        android:layout_marginBottom="88dp"
+        android:background="#DDC3E1"
         android:text="NEXT"
-        app:layout_constraintEnd_toEndOf="@+id/LAST"
-        app:layout_constraintStart_toStartOf="@+id/LAST"
-        app:layout_constraintTop_toBottomOf="@+id/STOP" />
+        android:textColor="@android:color/holo_purple"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/LAST"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/Play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:onClick="onPlay"
+
+        android:layout_marginBottom="65dp"
+        android:background="#DDC3E1"
         android:text="Play"
-        app:layout_constraintEnd_toEndOf="@+id/PAUSE"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/PAUSE"
-        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@android:color/holo_purple"
+        app:layout_constraintBottom_toTopOf="@+id/NEXT"
+        app:layout_constraintEnd_toEndOf="@+id/STOP"
+        app:layout_constraintHorizontal_bias="0.538"
+        app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints" />
 
     <SeekBar
         android:id="@+id/seekBar"
+        style="@android:style/Widget.DeviceDefault.Light.SeekBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
+        app:layout_constraintBottom_toTopOf="@+id/Play"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/musicName" />
 

@@ -1,6 +1,7 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.app.ui.Weather
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,17 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.app.R
-import com.example.app.weatherActivity
+import com.example.app.WeatherActivity
 import kotlinx.android.synthetic.main.weather_fragment.*
 
 
 class weatherFragment : Fragment() {
 
     companion object {
-        fun newInstance() = weatherFragment()
+        //fun newInstance() = weatherFragment()
     }
 
     private lateinit var viewModel: WeatherViewModel
@@ -33,7 +33,7 @@ class weatherFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         //viewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application)).get(WeatherViewModel::class.java)
         viewModel=ViewModelProviders.of(this).get(WeatherViewModel::class.java)
-        viewModel.cities.observe(requireActivity(), Observer {
+        viewModel.cities.observe(requireActivity(), {
             val cities = it
             val adapter = getActivity()?.let { it1 ->
                 ArrayAdapter(
@@ -46,35 +46,13 @@ class weatherFragment : Fragment() {
             listView.adapter = adapter
             listView.setOnItemClickListener { _, _, position, _ ->
                 val cityCode = cities[position].city_code
-                //myListener?.sendValue(cityCode)
-                transfer()
-
-
-                //startActivityForResult(Intent(context, weatherActivity::class.java), 1)
-
-
-                //val intent = Intent(this,weatherFragment::class.java)
-                //intent.putExtra("city_code",cityCode)
-                //startActivity(intent)
-
+                val intent = Intent(this.activity, WeatherActivity::class.java).also {
+                    it.putExtra("city_code",cityCode)
+                    startActivity(it)
+                }
             }
         })
     }
-
-    fun transfer(){
-        //跳转页面
-        val intent = Intent(context, weatherActivity::class.java)
-        //val intent2 = Intent(context.)
-        val cityCode = "101030100"
-        //传递参数
-        val bundle = Bundle()
-        bundle.putString("citycode", cityCode)
-        intent.putExtras(bundle)
-        startActivity(intent)
-    }
-
-
-
 }
 
 
