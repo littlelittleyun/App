@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">App</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="title_home">watch</string>
+    <string name="title_dashboard">game</string>
     <string name="title_notifications">music</string>
     <string name="textview">textview</string>
     <string name="title_weather">weather</string>
@@ -10,5 +10,6 @@
     <string name="score">Score:</string>
     <string name="reset">Reset</string>
     <string name="text">welcome to Fragment!!</string>
+
 
 </resources>

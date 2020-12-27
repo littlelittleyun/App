@@ -39,7 +39,7 @@ class CardRecyclerViewAdapter(val game: CardMatchingGame):RecyclerView.Adapter<C
             holder.cardButton.setBackgroundColor(Color.WHITE)
         }else{
             holder.cardButton.text = ""
-            holder.cardButton.setBackgroundResource(R.drawable.back)
+            holder.cardButton.setBackgroundResource(R.drawable.back1)
         }
         holder.cardButton.setOnClickListener {
             mOnclickListenLiser?.invoke(position)

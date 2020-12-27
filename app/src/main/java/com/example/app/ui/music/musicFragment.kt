@@ -32,13 +32,7 @@ class musicFragment : Fragment() {
     companion object {
         fun newInstance() = musicFragment()
     }
-
     private lateinit var viewModel: MusicViewModel
-
-
-    //var binder: MusicService.MusicBinder?=null
-   // lateinit var receiver: MusicReceiver
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,48 +42,44 @@ class musicFragment : Fragment() {
 
     val TAG = "MainActivity"
     val mediaPlayer = MediaPlayer()
-    val musicList = mutableListOf<String>()
-    val musicNameList = mutableListOf<String>()
+    var musicList = mutableListOf<String>()
+    var musicNameList = mutableListOf<String>()
     var current = 0
     var isPause = false
-
     val Channel_ID = "my channel"
     val Notification_ID = 1
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(MusicViewModel::class.java)
+        viewModel.musicList.observe(requireActivity(),{
+            musicList = it as MutableList<String>
+        })
+        viewModel.musicNameList.observe(requireActivity(),{
+            musicNameList = it as MutableList<String>
+        })
 
-      //  val intentFilter = IntentFilter()
-      //  intentFilter.addAction(MyReceiverAction)
-      //  receiver = MusicReceiver()
-      //  registerReceiver(receiver,intentFilter)
         mediaPlayer.setOnPreparedListener{
             it.start()
         }
-
         //播放至列表末尾循环播放
         mediaPlayer.setOnCompletionListener {
             current++
-            if(current >= musicList.size){
-                current = 0
+            if (musicList != null) {
+                if(current >= musicList.size){
+                    current = 0
+                }
             }
             play()
         }
-
-        //申请权限，更新时不用重复申请
-        if (this.context?.let { ContextCompat.checkSelfPermission(
-                it,
-                android.Manifest.permission.READ_EXTERNAL_STORAGE
-            ) } != PackageManager.PERMISSION_GRANTED){
-            this.activity?.let { ActivityCompat.requestPermissions(
-                it,
-                arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
-                0
-            ) }
+        if (this.context?.let { ContextCompat.checkSelfPermission(it,android.Manifest.permission.READ_EXTERNAL_STORAGE) } != PackageManager.PERMISSION_GRANTED){
+            this.activity?.let { ActivityCompat.requestPermissions(it,arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),0) }
         }else{
-            getMusicList()
+            viewModel.getMusicList()
         }
+
+
+
 
         //设置拖动条进度与歌曲播放同步
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -110,7 +100,6 @@ class musicFragment : Fragment() {
         thread{
             while(true){
                 Thread.sleep(1000)
-
                     seekBar.max = mediaPlayer.duration
                     seekBar.progress = mediaPlayer.currentPosition
 
@@ -133,27 +122,28 @@ class musicFragment : Fragment() {
         }
         NEXT.setOnClickListener {
             current++
-            if(current >= musicList.size){
-                current = 0
+            if (musicList != null) {
+                if(current >= musicList.size){
+                    current = 0
+                }
             }
             play()
         }
         LAST.setOnClickListener {
             current--
             if(current < 0){
-                current = musicList.size - 1
+                if (musicList != null) {
+                    current = musicList.size - 1
+                }
             }
             play()
         }
     }
-
-
-
-
-
     fun play(){
-        if (musicList.size == 0) return
-        val path = musicList[current]
+        if (musicList != null) {
+            if (musicList.size == 0) return
+        }
+        val path = musicList?.get(current)
         mediaPlayer.reset()
         try{
             mediaPlayer.setDataSource(path)
@@ -189,7 +179,7 @@ class musicFragment : Fragment() {
 
         val notification = builder.setSmallIcon(R.drawable.ic_notify)
             .setContentTitle("自制音乐播放器")
-            .setContentText("正在播放-${musicNameList[current]}")
+            .setContentText("正在播放-${musicNameList?.get(current)}")
             .setContentIntent(pendingIntent)//点击通知跳转应用
             .setAutoCancel(true)//点击后自动清空
             .build()
@@ -199,39 +189,13 @@ class musicFragment : Fragment() {
 
     }
 
-
-
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        getMusicList()
-    }
-
-    private fun getMusicList(){
-        //val x = con
-        val resolver: ContentResolver? = this.context?.getContentResolver()
-        val cursor = resolver?.query(
-            MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-            null,
-            null,
-            null,
-            null,
-            null
-        )
-        if (cursor != null){
-            while (cursor.moveToNext()){
-                val musicPath = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA))
-                musicList.add(musicPath)
-                val musicName = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE))
-                musicNameList.add(musicName)
-                Log.d(TAG, "getMusicList: $musicPath name:$musicName")
-            }
-            cursor.close()
-        }
+        viewModel.getMusicList()
     }
 
 
@@ -239,10 +203,5 @@ class musicFragment : Fragment() {
         super.onDestroy()
         mediaPlayer.release()
     }
-
-
-
-
-
 
 }
